@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="/layout :: head">
+    <title>List Books</title>
+</head>
+<body>
+<h3>Books</h3>
+<p>
+    <a th:href="@{/books/create}">
+        Add new books
+    </a>
+</p>
+<div class="notify">
+    <div th:if="${message}">
+        <span th:text="${#messages}"></span>
+    </div>
+</div>
+
+<div id="form">
+    <form th:action="@{/books/return}" method="post" novalidate="novalidate">
+        <label for="numberCode">Code</label>
+        <input type="text" id="numberCode" name="code"/>
+        <input type="submit" value="Return"/>
+    </form>
+</div>
+
+<table id = "books">
+    <thead>
+    <tr>
+        <th>STT</th>
+        <th>Name</th>
+        <th>Number</th>
+        <th>Number Remain</th>
+        <th>Code</th>
+        <th>Do you want borrow a book?</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="p, pStatus : ${books}">
+        <td th:text="${pStatus.count}"></td>
+        <td><a th:href="@{/books/view-book/{id}(id=${p.getId()})}" th:text="${p.getName()}"></a></td>
+        <td th:text="${p.getNumber()}"></td>
+        <td th:text="${p.getNumberBookRemain()}"></td>
+        <td th:text="${p.getNumberCode()}"></td>
+        <td><a th:href="@{/books/borrow/{id}(id=${p.getId()})}">Borrow</a></td>
+    </tr>
+    </tbody>
+</table>
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>
