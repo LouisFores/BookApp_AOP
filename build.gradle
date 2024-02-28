@@ -37,6 +37,7 @@ dependencies {
     implementation group: 'org.hibernate', name: 'hibernate-validator', version: '6.0.10.Final'
     implementation group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '3.1.0'
     implementation group: 'org.springframework', name: 'spring-aspects', version: '5.3.20'
+
 }
 
 test {

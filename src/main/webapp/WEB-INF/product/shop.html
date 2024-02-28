@@ -1,10 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="/layout :: head">
+    <meta charset="UTF-8">
+    <title>Shop</title>
 </head>
 <body>
-$END$
+<p>
+    <a href="/shopping-cart">Giỏ hàng của bạn</a>
+</p>
+
+<p>
+    <a href="/shop/create">Thêm sản phẩm</a>
+</p>
+<table id = "books">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Add To Cart</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product:${products}">
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.price}"></td>
+            <td><a th:href="@{/add/__${product.id}__(action='list')}">Add To Cart</a></td>
+    </tr>
+    </tbody>
+</table>
+<footer th:replace="/layout :: footer"></footer>
 </body>
 </html>

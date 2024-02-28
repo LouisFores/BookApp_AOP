@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="/layout :: head">
+    <meta charset="UTF-8">
     <title>List Books</title>
 </head>
 <body>
@@ -16,13 +17,16 @@
     </div>
 </div>
 
-<div id="form">
+<h2 th:text="${cookie}"></h2>
+
+<div id="form" style="margin-bottom: 20px">
     <form th:action="@{/books/return}" method="post" novalidate="novalidate">
         <label for="numberCode">Code</label>
         <input type="text" id="numberCode" name="code"/>
         <input type="submit" value="Return"/>
     </form>
 </div>
+
 
 <table id = "books">
     <thead>

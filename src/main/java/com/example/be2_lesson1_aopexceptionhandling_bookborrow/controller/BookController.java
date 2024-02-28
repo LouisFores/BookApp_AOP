@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 @Controller
@@ -17,11 +20,19 @@ public class BookController {
     @Autowired
     private IBookService bookService;
 
+    @Autowired
+    private HttpSession httpSession;
+
     @GetMapping("")
-    public ModelAndView listBook() {
+    public ModelAndView listBook(@CookieValue(value = "counter", defaultValue = "0") Long counter, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView("/views/list");
         Iterable<Book> books = bookService.findAll();
+        counter++;
+        Cookie cookie = new Cookie("counter", counter.toString());
+        cookie.setMaxAge(10);
+        response.addCookie(cookie);
         modelAndView.addObject("books", books);
+        modelAndView.addObject("cookie", cookie.getValue());
         return modelAndView;
     }
 
@@ -61,9 +72,10 @@ public class BookController {
     }
 
     @GetMapping("/view-book/{id}")
-    public ModelAndView viewForm(@PathVariable Long id) {
+    public ModelAndView viewForm(@PathVariable Long id ) {
         Optional<Book> book = bookService.findById(id);
         if (book.isPresent()) {
+            httpSession.setAttribute("book", book);
             ModelAndView modelAndView = new ModelAndView("/views/view-book");
             modelAndView.addObject("book", book.get());
             return modelAndView;
@@ -104,4 +116,14 @@ public class BookController {
         }
         return "redirect:/books";
     }
+
+    @GetMapping("/view-session")
+    public ModelAndView viewSession() {
+        ModelAndView modelAndView = new ModelAndView("/views/view-book");
+        Optional<Book> book = (Optional<Book>) httpSession.getAttribute("book");
+        System.out.println(book.get().getId());
+        modelAndView.addObject("book", book.get());
+        return modelAndView;
+    }
+
 }
