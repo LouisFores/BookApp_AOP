@@ -121,7 +121,6 @@ public class BookController {
     public ModelAndView viewSession() {
         ModelAndView modelAndView = new ModelAndView("/views/view-book");
         Optional<Book> book = (Optional<Book>) httpSession.getAttribute("book");
-        System.out.println(book.get().getId());
         modelAndView.addObject("book", book.get());
         return modelAndView;
     }
